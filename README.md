@@ -1,5 +1,7 @@
 # Mission 2: Simple (CRUD) Website with Codeigniter 4
 
+<img width="1884" height="1018" alt="image" src="https://github.com/user-attachments/assets/01761102-39e7-4945-8fc4-47b6f4fd88f6" />
+
 ---
 
 - Nama: Ikhsan Satriadi
