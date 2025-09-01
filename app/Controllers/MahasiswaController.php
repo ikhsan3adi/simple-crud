@@ -6,7 +6,7 @@ use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
 use App\Models\MahasiswaModel;
 
-class Mahasiswa extends ResourceController
+class MahasiswaController extends ResourceController
 {
     protected MahasiswaModel $mahasiswaModel;
     protected int $perPage = 10;

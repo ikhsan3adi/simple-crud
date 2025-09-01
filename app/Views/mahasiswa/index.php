@@ -49,13 +49,17 @@
                 <td><?= esc($mhs['nama']) ?></td>
                 <td><?= esc($mhs['jenis_kelamin']) == 'L' ? "Laki-laki" : "Perempuan" ?></td>
                 <td><?= date('d F Y', strtotime($mhs['tanggal_lahir'])) ?></td>
-                <td>
-                  <a href="<?= base_url('/mahasiswa/' . $mhs['id']) ?>" class="btn btn-info btn-sm"><i class="bi bi-eye"></i> Detail</a>
-                  <a href="<?= base_url('/mahasiswa/' . $mhs['id'] . '/edit') ?>" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i> Edit</a>
+                <td class="d-flex gap-1">
+                  <a href="<?= base_url('/mahasiswa/' . $mhs['id']) ?>" class="btn btn-info btn-sm d-flex gap-1">
+                    <i class="bi bi-eye"></i> <span class="d-none d-md-inline">Detail</span>
+                  </a>
+                  <a href="<?= base_url('/mahasiswa/' . $mhs['id'] . '/edit') ?>" class="btn btn-warning btn-sm d-flex gap-1">
+                    <i class="bi bi-pencil"></i> <span class="d-none d-md-inline">Edit</span>
+                  </a>
                   <form action="<?= base_url('/mahasiswa/' . $mhs['id']) ?>" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                     <?= csrf_field() ?>
                     <input type="hidden" name="_method" value="DELETE">
-                    <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i> Hapus</button>
+                    <button type="submit" class="btn btn-danger btn-sm d-flex gap-1"><i class="bi bi-trash"></i> <span class="d-none d-md-inline">Hapus</span></button>
                   </form>
                 </td>
               </tr>

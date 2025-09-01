@@ -9,4 +9,4 @@ use CodeIgniter\Router\RouteCollection;
 // $routes->get('/', 'Home::index');
 $routes->get('/', 'HelloWorld::index');
 
-$routes->resource('/mahasiswa', ['controller' => 'Mahasiswa']);
+$routes->resource('/mahasiswa', ['controller' => 'MahasiswaController']);
