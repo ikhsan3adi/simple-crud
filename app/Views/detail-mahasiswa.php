@@ -1,5 +1,3 @@
-<?= $this->extend('templates/page_layout'); ?>
-<?= $this->section('content'); ?>
 <main>
   <div class="container">
     <div class="row mt-3">
@@ -29,4 +27,3 @@
     </div>
   </div>
 </main>
-<?= $this->endSection(); ?>

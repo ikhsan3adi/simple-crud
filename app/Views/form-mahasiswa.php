@@ -1,6 +1,3 @@
-<?= $this->extend('templates/page_layout') ?>
-<?= $this->section('content') ?>
-
 <main>
   <div class="container">
     <div class="row mt-3">
@@ -25,7 +22,7 @@
           </div>
         <?php endif; ?>
 
-        <form action="<?= isset($mahasiswa) ? base_url('mahasiswa/' . $mahasiswa['id']) : base_url('mahasiswa') ?>" method="post">
+        <form action="<?= isset($mahasiswa) ? base_url('mahasiswa/' . $mahasiswa['nim']) : base_url('mahasiswa') ?>" method="post">
 
           <?= csrf_field() ?>
 
@@ -59,5 +56,3 @@
     </div>
   </div>
 </main>
-
-<?= $this->endSection() ?>

@@ -17,11 +17,11 @@ class BiodataMahasiswaSeeder extends Seeder
             $jenis_kelamin = $faker->randomElement(['L', 'P']);
 
             $nama = $jenis_kelamin === 'L' ?
-                $faker->name(Person::GENDER_MALE) :
-                $faker->name(Person::GENDER_FEMALE);
+                $faker->firstNameMale() . ' ' . $faker->firstNameMale() :
+                $faker->firstNameFemale() . ' ' . $faker->firstNameFemale();
 
             $data[] = [
-                'nim' => $faker->unique()->numerify('2415#####'),
+                'nim' => $faker->unique()->numerify('24#######'),
                 'nama' => $nama,
                 'jenis_kelamin' => $jenis_kelamin,
                 'tanggal_lahir' => $faker->dateTimeBetween('2003-01-01', '2005-12-31')->format('Y-m-d'),

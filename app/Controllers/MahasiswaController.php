@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
 use App\Models\MahasiswaModel;
 
@@ -16,11 +15,6 @@ class MahasiswaController extends ResourceController
         $this->mahasiswaModel = new MahasiswaModel();
     }
 
-    /**
-     * Return an array of resource objects, themselves in array format.
-     *
-     * @return ResponseInterface
-     */
     public function index()
     {
         $keyword = request()->getVar('keyword');
@@ -35,25 +29,20 @@ class MahasiswaController extends ResourceController
 
         $data = [
             'title' => 'Data Mahasiswa',
-            'pager' => $this->mahasiswaModel->pager,
-            'perPage' => $this->perPage,
-            'currentPage' => request()->getVar('page_mahasiswa') ?? 1,
-            'mahasiswa' => $mahasiswa,
+            'content' => view('list-mahasiswa', [
+                'pager' => $this->mahasiswaModel->pager,
+                'perPage' => $this->perPage,
+                'currentPage' => request()->getVar('page_mahasiswa') ?? 1,
+                'mahasiswa' => $mahasiswa,
+            ]),
         ];
 
-        return view('mahasiswa/index', $data);
+        return view('template', $data);
     }
 
-    /**
-     * Return the properties of a resource object.
-     *
-     * @param int|string|null $id
-     *
-     * @return ResponseInterface
-     */
-    public function show($id = null)
+    public function show($nim = null)
     {
-        $mahasiswa = $this->mahasiswaModel->find($id);
+        $mahasiswa = $this->mahasiswaModel->where('nim', $nim)->first();
 
         if (!$mahasiswa) {
             return redirect()->to('/mahasiswa')
@@ -61,24 +50,24 @@ class MahasiswaController extends ResourceController
                 ->with('error', true);
         }
 
-        return view('mahasiswa/show', ['mahasiswa' => $mahasiswa, 'title' => 'Detail Mahasiswa']);
+        $data = [
+            'title' => 'Detail Mahasiswa',
+            'content' => view('detail-mahasiswa', ['mahasiswa' => $mahasiswa]),
+        ];
+
+        return view('template', $data);
     }
 
-    /**
-     * Return a new resource object, with default properties.
-     *
-     * @return ResponseInterface
-     */
     public function new()
     {
-        return view('mahasiswa/form', ['title' => 'Form Tambah Mahasiswa']);
+        $data = [
+            'title' => 'Form Tambah Mahasiswa',
+            'content' => view('form-mahasiswa'),
+        ];
+
+        return view('template', $data);
     }
 
-    /**
-     * Create a new resource object, from "posted" parameters.
-     *
-     * @return ResponseInterface
-     */
     public function create()
     {
         $validation = \Config\Services::validation();
@@ -104,16 +93,9 @@ class MahasiswaController extends ResourceController
         return redirect()->to('/mahasiswa')->with('msg', 'Data mahasiswa berhasil disimpan.');
     }
 
-    /**
-     * Return the editable properties of a resource object.
-     *
-     * @param int|string|null $id
-     *
-     * @return ResponseInterface
-     */
-    public function edit($id = null)
+    public function edit($nim = null)
     {
-        $mahasiswa = $this->mahasiswaModel->find($id);
+        $mahasiswa = $this->mahasiswaModel->where('nim', $nim)->first();
         if (!$mahasiswa) {
             return redirect()->to('/mahasiswa')
                 ->with('msg', 'Data mahasiswa tidak ditemukan.')
@@ -122,22 +104,17 @@ class MahasiswaController extends ResourceController
 
         $data = [
             'title' => 'Form Edit Mahasiswa',
-            'mahasiswa' => $mahasiswa,
+            'content' => view('form-mahasiswa', [
+                'mahasiswa' => $mahasiswa,
+            ]),
         ];
 
-        return view('mahasiswa/form', $data);
+        return view('template', $data);
     }
 
-    /**
-     * Add or update a model resource, from "posted" properties.
-     *
-     * @param int|string|null $id
-     *
-     * @return ResponseInterface
-     */
-    public function update($id = null)
+    public function update($nim = null)
     {
-        $mahasiswa = $this->mahasiswaModel->find($id);
+        $mahasiswa = $this->mahasiswaModel->where('nim', $nim)->first();
         if (!$mahasiswa) {
             return redirect()->to('/mahasiswa')
                 ->with('msg', 'Data mahasiswa tidak ditemukan.')
@@ -147,7 +124,7 @@ class MahasiswaController extends ResourceController
         $validation = \Config\Services::validation();
         $validation->setRules([
             'nama' => 'required|min_length[3]|max_length[100]',
-            'nim' => 'required|numeric|max_length[20]|is_unique[biodata_mahasiswa.nim,id,' . $id . ']',
+            'nim' => 'required|numeric|max_length[20]|is_unique[biodata_mahasiswa.nim,id,' . $mahasiswa['id'] . ']',
             'jenis_kelamin' => 'required|in_list[L,P]',
             'tanggal_lahir' => 'required|valid_date',
         ]);
@@ -158,7 +135,7 @@ class MahasiswaController extends ResourceController
                 ->with('error', true);
         }
 
-        $this->mahasiswaModel->update($id, [
+        $this->mahasiswaModel->update($mahasiswa['id'], [
             'nama' => request()->getPost('nama'),
             'nim' => request()->getPost('nim'),
             'jenis_kelamin' => request()->getPost('jenis_kelamin'),
@@ -167,23 +144,16 @@ class MahasiswaController extends ResourceController
         return redirect()->to('/mahasiswa')->with('msg', 'Data mahasiswa berhasil diupdate.');
     }
 
-    /**
-     * Delete the designated resource object from the model.
-     *
-     * @param int|string|null $id
-     *
-     * @return ResponseInterface
-     */
-    public function delete($id = null)
+    public function delete($nim = null)
     {
-        $mahasiswa = $this->mahasiswaModel->find($id);
+        $mahasiswa = $this->mahasiswaModel->where('nim', $nim)->first();
         if (!$mahasiswa) {
             return redirect()->to('/mahasiswa')
                 ->with('msg', 'Data mahasiswa tidak ditemukan.')
                 ->with('error', true);
         }
 
-        $this->mahasiswaModel->delete($id);
+        $this->mahasiswaModel->delete($mahasiswa['id']);
         return redirect()->to('/mahasiswa')->with('msg', 'Data mahasiswa berhasil dihapus.');
     }
 }
